@@ -1,0 +1,16 @@
+PODS:
+  - videoUI2 (0.1.0)
+
+DEPENDENCIES:
+  - videoUI2 (from `../`)
+
+EXTERNAL SOURCES:
+  videoUI2:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  videoUI2: f6d015df877f5e453fdb6d7e9c51044d95ef8100
+
+PODFILE CHECKSUM: 213366db38d3a92864e588e82cb9c3d0ca2fd9bf
+
+COCOAPODS: 1.13.0

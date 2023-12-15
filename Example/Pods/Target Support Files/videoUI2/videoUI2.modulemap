@@ -1,0 +1,6 @@
+framework module videoUI2 {
+  umbrella header "videoUI2-umbrella.h"
+
+  export *
+  module * { export * }
+}
