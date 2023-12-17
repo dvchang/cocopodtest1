@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'videoUI2'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'videoUI2 is used to display video and images'
 
 # This description is used to generate tags and improve search results.
@@ -21,10 +21,10 @@ Pod::Spec.new do |s|
 So this is a library that can display video and images in a view controller
                        DESC
 
-  s.homepage         = 'https://github.com/1630880/videoUI2'
+  s.homepage         = 'https://github.com/dvchang/cocopodtest1'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { '1630880' => 'dvchangyuan@gmail.com' }
+  s.author           = { 'dvchang' => 'dvchangyuan@gmail.com' }
   s.source           = { :git => 'https://github.com/dvchang/cocopodtest1.git', :tag => s.version.to_s }
   s.swift_version = '5.0'
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
