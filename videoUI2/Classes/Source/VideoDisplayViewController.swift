@@ -13,6 +13,7 @@ public class VideoDisplayViewController: UIViewController {
     var videoFeedDataSource: VideoViewDataSource!
     var imageCarouselView: UICollectionView!
     var imageCarouselDataSource : ImageCarouselDataSource!
+    var dataSource: DataSourceImplementation = DataSourceImplementation()
     var currentFocusedCaroucelIndex = 0
     var normalCaroucelItemSize = CGSize(width: 0, height: 0)
     var videoFeedCellSize = CGSize(width: 0, height: 0)
@@ -23,6 +24,18 @@ public class VideoDisplayViewController: UIViewController {
 
     public static let videoFeedViewCellKey = "videoFeedViewCellKey"
     public static let imageCarouselCellKey = "imageCarouselCellKey"
+    
+    
+    class DataSourceImplementation: DataSource {
+        var dataArray : [VideoData] = []
+        func numberOfItem() -> Int {
+            return dataArray.count
+        }
+        
+        func dataAtIndex(_ index: Int) -> VideoData {
+            return dataArray[index]
+        }
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +56,7 @@ public class VideoDisplayViewController: UIViewController {
         videoFeedView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         videoFeedView.backgroundColor = UIColor.yellow
         videoFeedView.register(VideoFeedViewCell.self, forCellWithReuseIdentifier: VideoDisplayViewController.videoFeedViewCellKey)
-        videoFeedDataSource = VideoViewDataSource()
+        videoFeedDataSource = VideoViewDataSource(source: dataSource)
         videoFeedView.dataSource = videoFeedDataSource
         videoFeedView.showsHorizontalScrollIndicator = false
         self.view.addSubview(videoFeedView)
@@ -61,7 +74,7 @@ public class VideoDisplayViewController: UIViewController {
         imageCarouselView = UICollectionView(frame: CGRect(x: 0, y: y, width: self.view.bounds.width, height: itemHeight), collectionViewLayout:imageCarouselLayout);
         imageCarouselView.backgroundColor = UIColor.red
         videoFeedView.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-        imageCarouselDataSource = ImageCarouselDataSource()
+        imageCarouselDataSource = ImageCarouselDataSource(source: dataSource)
         imageCarouselView.register(CarouselViewCell.self, forCellWithReuseIdentifier: VideoDisplayViewController.imageCarouselCellKey)
         imageCarouselView.dataSource = imageCarouselDataSource
         imageCarouselView.showsHorizontalScrollIndicator = false
@@ -94,8 +107,7 @@ public class VideoDisplayViewController: UIViewController {
             VideoData(id: 6,
                       imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg",
                       videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4")]
-        videoFeedDataSource.videoDataArray = data
-        imageCarouselDataSource.videoDataArray = data
+        dataSource.dataArray = data
         videoFeedView.reloadData()
         imageCarouselView.reloadData()
     }
@@ -104,6 +116,13 @@ public class VideoDisplayViewController: UIViewController {
         if (currentFocusedCaroucelIndex != index) {
             currentFocusedCaroucelIndex = index
             imageCarouselView.performBatchUpdates(nil, completion: nil)
+        }
+    }
+    
+    func scrollAndUpdateCarouselFocusIndex(index: Int) {
+        if (index != currentFocusedCaroucelIndex) {
+            imageCarouselView.scrollToItem(at: IndexPath(row: index, section: 0), at: .left, animated: true)
+            updateFocusedCarousel(index: index)
         }
     }
 }
@@ -123,6 +142,7 @@ extension VideoDisplayViewController : UICollectionViewDelegateFlowLayout {
 }
 
 extension VideoDisplayViewController : UICollectionViewDelegate {
+
     
     func scrollToCurrentCenterItem(collectionView: UICollectionView, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         targetContentOffset.pointee = collectionView.contentOffset
@@ -135,6 +155,7 @@ extension VideoDisplayViewController : UICollectionViewDelegate {
             index.row = index.row+1
         }
         collectionView.scrollToItem(at: index, at: .left, animated: true)
+        scrollAndUpdateCarouselFocusIndex(index: index.row)
     }
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -151,7 +172,6 @@ extension VideoDisplayViewController : UICollectionViewDelegate {
             var centralCellDiff = 100000.0
             for index in indexes {
                 let cell = imageCarouselView.cellForItem(at: index)!
-                
                 let centerX = cell.center.x - imageCarouselView.contentOffset.x
                 let diff = abs(centerX - imageCarouselView.bounds.width/2)
                 if (diff < centralCellDiff) {
