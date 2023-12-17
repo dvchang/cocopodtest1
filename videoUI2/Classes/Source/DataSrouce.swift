@@ -47,8 +47,25 @@ class ImageCarouselDataSource : NSObject, UICollectionViewDataSource {
     }
 }
 
-public protocol DataSource {
-    func numberOfItem() -> Int
-    func dataAtIndex(_ index:Int) -> VideoData
+class DataSource {
+    var dataArray : [VideoData] = []
+    
+    func parseData(_ data:[(String, String)]) {
+        var array : [VideoData] = []
+        for i in 0...data.count - 1 {
+            let pair = data[i]
+            let newData = VideoData(id: i, imageURL: pair.0, videoURL: pair.1)
+            array.append(newData)
+        }
+        dataArray = array
+    }
+    
+    func numberOfItem() -> Int {
+        return dataArray.count
+    }
+    
+    func dataAtIndex(_ index: Int) -> VideoData {
+        return dataArray[index]
+    }
 }
 

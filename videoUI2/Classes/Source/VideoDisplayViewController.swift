@@ -13,7 +13,7 @@ public class VideoDisplayViewController: UIViewController {
     var videoFeedDataSource: VideoViewDataSource!
     var imageCarouselView: UICollectionView!
     var imageCarouselDataSource : ImageCarouselDataSource!
-    var dataSource: DataSourceImplementation = DataSourceImplementation()
+    var dataSource: DataSource = DataSource()
     var currentFocusedCaroucelIndex = 0
     var normalCaroucelItemSize = CGSize(width: 0, height: 0)
     var videoFeedCellSize = CGSize(width: 0, height: 0)
@@ -23,19 +23,7 @@ public class VideoDisplayViewController: UIViewController {
     let horizontalSpacing = 10
 
     public static let videoFeedViewCellKey = "videoFeedViewCellKey"
-    public static let imageCarouselCellKey = "imageCarouselCellKey"
-    
-    
-    class DataSourceImplementation: DataSource {
-        var dataArray : [VideoData] = []
-        func numberOfItem() -> Int {
-            return dataArray.count
-        }
-        
-        func dataAtIndex(_ index: Int) -> VideoData {
-            return dataArray[index]
-        }
-    }
+    public static let imageCarouselCellKey = "imageCarouselCellKey"    
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,26 +76,30 @@ public class VideoDisplayViewController: UIViewController {
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let data = [
-            VideoData(id: 1,
-                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
-                      videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
-            VideoData(id: 2, 
-                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
-                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
-            VideoData(id: 3, 
-                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg",
-                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
-            VideoData(id: 4, 
-                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
-                      videoURL: "http://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
-            VideoData(id: 5,
-                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerFun.jpg",
-                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"),
-            VideoData(id: 6,
-                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg",
-                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4")]
-        dataSource.dataArray = data
+//        let data = [
+//            VideoData(id: 1,
+//                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
+//                      videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
+//            VideoData(id: 2, 
+//                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
+//                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
+//            VideoData(id: 3, 
+//                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg",
+//                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
+//            VideoData(id: 4, 
+//                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
+//                      videoURL: "http://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
+//            VideoData(id: 5,
+//                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerFun.jpg",
+//                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"),
+//            VideoData(id: 6,
+//                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg",
+//                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4")]
+ //       dataSource.dataArray = data
+    }
+    
+    public func setData(data: [(String, String)]) {
+        dataSource.parseData(data)
         videoFeedView.reloadData()
         imageCarouselView.reloadData()
     }
