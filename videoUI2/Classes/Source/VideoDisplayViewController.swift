@@ -13,6 +13,10 @@ public class VideoDisplayViewController: UIViewController {
     var videoFeedDataSource: VideoViewDataSource!
     var imageCarouselView: UICollectionView!
     var imageCarouselDataSource : ImageCarouselDataSource!
+    var currentFocusedCaroucelIndex = 0
+    var normalCaroucelItemSize = CGSize(width: 0, height: 0)
+    var videoFeedCellSize = CGSize(width: 0, height: 0)
+    let enLargeScale = 1.2
     
     let topSpacing = 64
     let horizontalSpacing = 10
@@ -33,6 +37,7 @@ public class VideoDisplayViewController: UIViewController {
         let videoFeedlayout = UICollectionViewFlowLayout()
         videoFeedlayout.scrollDirection = .horizontal
         videoFeedlayout.itemSize = CGSize(width: view.bounds.width, height: view.bounds.width)
+        videoFeedCellSize = videoFeedlayout.itemSize
         videoFeedlayout.minimumLineSpacing = 0
         videoFeedView = UICollectionView(frame: CGRect(x: 0, y: CGFloat(topSpacing), width: self.view.bounds.width, height: self.view.bounds.width), collectionViewLayout:videoFeedlayout);
         videoFeedView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -50,10 +55,12 @@ public class VideoDisplayViewController: UIViewController {
         imageCarouselLayout.scrollDirection = .horizontal
         let itemWidth = floor(view.bounds.width/3)
         let itemHeight = floor(view.bounds.height/3)
-        imageCarouselLayout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        normalCaroucelItemSize = CGSize(width: itemWidth, height: itemHeight)
+        imageCarouselLayout.itemSize = normalCaroucelItemSize
         let y = videoFeedView.frame.height + videoFeedView.frame.origin.y + CGFloat(horizontalSpacing)
-        imageCarouselView = UICollectionView(frame: CGRect(x: 0, y: y, width: self.view.bounds.width, height: self.view.bounds.width * 0.5), collectionViewLayout:imageCarouselLayout);
+        imageCarouselView = UICollectionView(frame: CGRect(x: 0, y: y, width: self.view.bounds.width, height: itemHeight), collectionViewLayout:imageCarouselLayout);
         imageCarouselView.backgroundColor = UIColor.red
+        videoFeedView.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
         imageCarouselDataSource = ImageCarouselDataSource()
         imageCarouselView.register(CarouselViewCell.self, forCellWithReuseIdentifier: VideoDisplayViewController.imageCarouselCellKey)
         imageCarouselView.dataSource = imageCarouselDataSource
@@ -63,6 +70,7 @@ public class VideoDisplayViewController: UIViewController {
         imageCarouselView.contentOffset = CGPoint(x:inset, y: 0)
         imageCarouselView.contentInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
         imageCarouselView.delegate = self
+        imageCarouselView.clipsToBounds = false
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -91,6 +99,27 @@ public class VideoDisplayViewController: UIViewController {
         videoFeedView.reloadData()
         imageCarouselView.reloadData()
     }
+    
+    func updateFocusedCarousel(index: Int) {
+        if (currentFocusedCaroucelIndex != index) {
+            currentFocusedCaroucelIndex = index
+            imageCarouselView.performBatchUpdates(nil, completion: nil)
+        }
+    }
+}
+
+extension VideoDisplayViewController : UICollectionViewDelegateFlowLayout {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if (collectionView === self.imageCarouselView) {
+            if (indexPath.row == currentFocusedCaroucelIndex) {
+                return CGSize(width:normalCaroucelItemSize.width * enLargeScale, height:normalCaroucelItemSize.height * enLargeScale)
+            } else {
+                return normalCaroucelItemSize
+            }
+        } else {
+            return videoFeedCellSize
+        }
+    }
 }
 
 extension VideoDisplayViewController : UICollectionViewDelegate {
@@ -111,8 +140,26 @@ extension VideoDisplayViewController : UICollectionViewDelegate {
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if (scrollView === videoFeedView) {
             scrollToCurrentCenterItem(collectionView: videoFeedView, targetContentOffset: targetContentOffset)
-        } else {
-            // scrollToCurrentCenterItem(collectionView: imageCarouselView, targetContentOffset: targetContentOffset)
+        }
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if (scrollView === imageCarouselView) {
+            var indexes = imageCarouselView.indexPathsForVisibleItems
+            indexes.sort()
+            var centralCellIndex = 0
+            var centralCellDiff = 100000.0
+            for index in indexes {
+                let cell = imageCarouselView.cellForItem(at: index)!
+                
+                let centerX = cell.center.x - imageCarouselView.contentOffset.x
+                let diff = abs(centerX - imageCarouselView.bounds.width/2)
+                if (diff < centralCellDiff) {
+                    centralCellIndex = index.row
+                    centralCellDiff = diff
+                }
+            }
+            updateFocusedCarousel(index: centralCellIndex)
         }
     }
 }
