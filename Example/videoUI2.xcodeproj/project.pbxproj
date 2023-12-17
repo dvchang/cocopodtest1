@@ -42,7 +42,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		63081A6696B3D2F987897A91 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		75082B14B45D5A840A71ECC8 /* Pods-videoUI2_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-videoUI2_Tests.debug.xcconfig"; path = "Target Support Files/Pods-videoUI2_Tests/Pods-videoUI2_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		C572E331197E489437C56DB6 /* videoUI2.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = videoUI2.podspec; path = ../videoUI2.podspec; sourceTree = "<group>"; };
+		C572E331197E489437C56DB6 /* videoUI2.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = videoUI2.podspec; path = ../videoUI2.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E18BABE119AF46DD68D34A56 /* Pods_videoUI2_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_videoUI2_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E634FAE88CC1034C56569D08 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -265,10 +265,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-videoUI2_Example/Pods-videoUI2_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/videoUI2/videoUI2.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/videoUI2.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

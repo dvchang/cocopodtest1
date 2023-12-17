@@ -18,5 +18,10 @@
   "platforms": {
     "ios": "10.0"
   },
-  "source_files": "videoUI2/Classes/**/*"
+  "source_files": "videoUI2/Classes/**/*",
+  "dependencies": {
+    "AlamofireImage": [
+      "~> 4.3"
+    ]
+  }
 }

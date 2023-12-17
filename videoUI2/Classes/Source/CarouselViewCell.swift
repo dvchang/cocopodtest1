@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 import AlamofireImage
 
 class CarouselViewCell : UICollectionViewCell {
@@ -17,6 +18,7 @@ class CarouselViewCell : UICollectionViewCell {
         super.init(frame: frame)
         imageView.frame = self.contentView.bounds
         imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        imageView.contentMode = UIView.ContentMode.scaleAspectFit
         self.contentView.addSubview(imageView)
     }
     
@@ -31,10 +33,17 @@ class CarouselViewCell : UICollectionViewCell {
             return
         }
         
-        AF.request(photoData.imageUrl).responseImage { response in
+        AF.request(data.imageURL).responseImage {
+            [weak self] (response) in
+            guard let strongSelf = self else {
+                            return
+                        }
+            guard self?.videoData?.imageURL == data.imageURL else {
+                return
+            }
             switch response.result {
             case .success(let image):
-                self.imageView?.image = image
+                self?.imageView.image = image
             case .failure(_):
                 break
             }

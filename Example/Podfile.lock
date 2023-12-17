@@ -1,15 +1,26 @@
 PODS:
-  - videoUI2 (0.1.0)
+  - Alamofire (5.8.1)
+  - AlamofireImage (4.3.0):
+    - Alamofire (~> 5.8)
+  - videoUI2 (0.1.0):
+    - AlamofireImage (~> 4.3)
 
 DEPENDENCIES:
   - videoUI2 (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - AlamofireImage
 
 EXTERNAL SOURCES:
   videoUI2:
     :path: "../"
 
 SPEC CHECKSUMS:
-  videoUI2: f6d015df877f5e453fdb6d7e9c51044d95ef8100
+  Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
+  videoUI2: 1970e1aeca119a7d2b74e26f233050341a8144b9
 
 PODFILE CHECKSUM: 213366db38d3a92864e588e82cb9c3d0ca2fd9bf
 
