@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+So this is a library that can display video and images in a view controller
                        DESC
 
   s.homepage         = 'https://github.com/1630880/videoUI2'
@@ -29,7 +29,7 @@ TODO: Add long description of the pod here.
   s.swift_version = '5.0'
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '12.0'
 
   s.source_files = 'videoUI2/Classes/**/*'
   

@@ -38,12 +38,12 @@ class CarouselViewCell : UICollectionViewCell {
             guard let strongSelf = self else {
                             return
                         }
-            guard self?.videoData?.imageURL == data.imageURL else {
+            guard strongSelf.videoData?.imageURL == data.imageURL else {
                 return
             }
             switch response.result {
             case .success(let image):
-                self?.imageView.image = image
+                strongSelf.imageView.image = image
             case .failure(_):
                 break
             }
