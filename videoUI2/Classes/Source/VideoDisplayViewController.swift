@@ -125,6 +125,18 @@ public class VideoDisplayViewController: UIViewController {
             updateFocusedCarousel(index: index)
         }
     }
+    
+    func updateVideoFeedPosition(index: Int) {
+        var indexes = videoFeedView.indexPathsForVisibleItems
+        indexes.sort()
+        if (indexes.count <= 0) {
+            return
+        }
+        let currentIndex = indexes.first!.row
+        if (currentIndex != index) {
+            videoFeedView.scrollToItem(at: IndexPath(row: index, section:0), at: .left, animated: true)
+        }
+    }
 }
 
 extension VideoDisplayViewController : UICollectionViewDelegateFlowLayout {
@@ -180,6 +192,7 @@ extension VideoDisplayViewController : UICollectionViewDelegate {
                 }
             }
             updateFocusedCarousel(index: centralCellIndex)
+            updateVideoFeedPosition(index: centralCellIndex)
         }
     }
 }
