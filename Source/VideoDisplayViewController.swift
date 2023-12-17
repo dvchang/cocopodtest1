@@ -25,13 +25,7 @@ public class VideoDisplayViewController: UIViewController {
                 
         setupVideoFeedView()
         
-        let imageCarouselLayout = UICollectionViewFlowLayout()
-        imageCarouselLayout.scrollDirection = .horizontal
-        imageCarouselLayout.itemSize = CGSize(width: view.bounds.width, height: (view.bounds.width)/3)
-        let y = videoFeedView.frame.height + videoFeedView.frame.origin.y + CGFloat(horizontalSpacing)
-        imageCarouselView = UICollectionView(frame: CGRect(x: 0, y: y, width: self.view.bounds.width, height: self.view.bounds.width * 0.66), collectionViewLayout:imageCarouselLayout);
-        imageCarouselView.backgroundColor = UIColor.red
-        self.view.addSubview(imageCarouselView)
+        setupCarouselView()
     }
     
     func setupVideoFeedView() {
@@ -50,12 +44,37 @@ public class VideoDisplayViewController: UIViewController {
         videoFeedView.delegate = self
     }
     
+    func setupCarouselView() {
+        let imageCarouselLayout = UICollectionViewFlowLayout()
+        imageCarouselLayout.scrollDirection = .horizontal
+        imageCarouselLayout.itemSize = CGSize(width: view.bounds.width, height: (view.bounds.width)/3)
+        let y = videoFeedView.frame.height + videoFeedView.frame.origin.y + CGFloat(horizontalSpacing)
+        imageCarouselView = UICollectionView(frame: CGRect(x: 0, y: y, width: self.view.bounds.width, height: self.view.bounds.width * 0.66), collectionViewLayout:imageCarouselLayout);
+        imageCarouselView.backgroundColor = UIColor.red
+        self.view.addSubview(imageCarouselView)
+    }
+    
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)    
         videoFeedDataSource.videoDataArray = [
-            VideoData(id: 1, imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg", videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
-            VideoData(id: 2, imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg", videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
-            VideoData(id: 3, imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg", videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4")]
+            VideoData(id: 1, 
+                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
+                      videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
+            VideoData(id: 2, 
+                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
+                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
+            VideoData(id: 3, 
+                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg",
+                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
+            VideoData(id: 4, 
+                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
+                      videoURL: "http://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
+            VideoData(id: 5,
+                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerFun.jpg",
+                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"),
+            VideoData(id: 6,
+                      imageURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg",
+                      videoURL: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4")]
         videoFeedView.reloadData()
     }
 }
